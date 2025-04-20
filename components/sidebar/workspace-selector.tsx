@@ -24,14 +24,11 @@ export const WorkspaceSelector = ({
   const [selectedWorkspace, setSelectedWorkspace] = useState<
     WorkspacesProps | undefined
   >(undefined);
+  const [isClient, setIsClient] = useState(false);
 
-  const onWorkspaceSelect = (id: string) => {
-    setSelectedWorkspace(
-      workspaces.find((workspace) => workspace.workspaceId === id)
-    );
-
-    router.push(`/workspace/${id}`);
-  };
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     if (workspaceId && workspaces) {
@@ -40,6 +37,13 @@ export const WorkspaceSelector = ({
       );
     }
   }, [workspaceId, workspaces]);
+
+  const onWorkspaceSelect = (id: string) => {
+    setSelectedWorkspace(
+      workspaces.find((workspace) => workspace.workspaceId === id)
+    );
+    router.push(`/workspace/${id}`);
+  };
 
   return (
     <>
@@ -55,10 +59,10 @@ export const WorkspaceSelector = ({
                   name={(selectedWorkspace?.workspace?.name as string) || "W"}
                 />
 
-                <div className="font-semibold text-muted-foreground">
-                  {selectedWorkspace?.workspace.name}
+                <div className="font-semibold text-muted-foreground truncate max-w-[120px]">
+                  {isClient ? selectedWorkspace?.workspace.name || "Select Workspace" : "Loading..."}
                 </div>
-                <ChevronsUpDown className="ml-auto" />
+                <ChevronsUpDown className="ml-auto flex-shrink-0" />
               </SidebarMenuButton>
             </DropdownMenuTrigger>
 
@@ -76,10 +80,10 @@ export const WorkspaceSelector = ({
                       name={workspace?.workspace.name as string}
                     />
 
-                    <p>{workspace?.workspace.name}</p>
+                    <p className="truncate max-w-[150px]">{workspace?.workspace.name}</p>
                   </div>
                   {workspace.workspaceId === workspaceId && (
-                    <Check className="ml-auto" />
+                    <Check className="ml-auto flex-shrink-0" />
                   )}
                 </DropdownMenuItem>
               ))}

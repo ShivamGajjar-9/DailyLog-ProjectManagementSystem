@@ -40,52 +40,58 @@ import { CalendarIcon } from "lucide-react";
 import { Calendar } from "../ui/calendar";
 import { taskStats } from "@/utils";
 import { Textarea } from "../ui/textarea";
-import { toast } from "sonner";
 import { createNewTask } from "@/app/actions/task";
 import { FileUpload } from "../file-upload";
+import { useToast } from "../ui/use-toast";
 
 interface Props {
   project: ProjectProps;
+  onClose?: () => void;
 }
 
 export type TaskFormValues = z.infer<typeof taskFormSchema>;
 
-export const CreateTaskDialog = ({ project }: Props) => {
+export function CreateTaskDialog({ project, onClose }: Props) {
   const router = useRouter();
-  const [open, setOpen] = useState(false);
-  const workspaceId = useWorkspaceId();
-  const [pending, setPending] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
 
   const form = useForm<TaskFormValues>({
     resolver: zodResolver(taskFormSchema),
     defaultValues: {
       title: "",
       description: "",
-      status: "TODO",
+      priority: "medium",
+      status: "todo",
       dueDate: new Date(),
-      startDate: new Date(),
-      priority: "MEDIUM",
-      attachments: [],
-      assigneeId: "",
+      assignedTo: "",
+      projectId: project.id,
     },
   });
 
-  const handleOnSubmit = async (data: TaskFormValues) => {
+  async function onSubmit(data: TaskFormValues) {
     try {
-      setPending(true);
+      setIsLoading(true);
+      await createNewTask(data, project.id, project.workspaceId);
 
-      await createNewTask(data, project.id, workspaceId! as string);
+      toast({
+        title: "Success",
+        description: "Task created successfully",
+      });
 
-      toast.success("New task created successfully");
+      onClose?.();
       router.refresh();
-      form.reset();
     } catch (error) {
-      console.log(error);
-      toast.error("Failed to create task. Please try again");
+      console.error("Error creating task:", error);
+      toast({
+        title: "Error",
+        description: "Failed to create task. Please try again.",
+        variant: "destructive",
+      });
     } finally {
-      setPending(false);
+      setIsLoading(false);
     }
-  };
+  }
 
   return (
     <Dialog>
@@ -98,10 +104,7 @@ export const CreateTaskDialog = ({ project }: Props) => {
           <DialogTitle>Create Task</DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleOnSubmit)}
-            className="space-y-4"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="title"
@@ -327,7 +330,7 @@ export const CreateTaskDialog = ({ project }: Props) => {
             />
 
             <div className="flex justify-end space-x-2">
-              <Button type="submit" disabled={pending}>
+              <Button type="submit" disabled={isLoading}>
                 Submit
               </Button>
             </div>
@@ -336,4 +339,4 @@ export const CreateTaskDialog = ({ project }: Props) => {
       </DialogContent>
     </Dialog>
   );
-};
+}

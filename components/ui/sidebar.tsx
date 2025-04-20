@@ -175,7 +175,7 @@ const Sidebar = React.forwardRef<
     },
     ref
   ) => {
-    const { isMobile, state, openMobile, setOpenMobile } = useSidebar()
+    const { isMobile, state, openMobile, setOpenMobile, toggleSidebar } = useSidebar()
 
     if (collapsible === "none") {
       return (
@@ -244,6 +244,7 @@ const Sidebar = React.forwardRef<
               : "group-data-[collapsible=icon]:w-[--sidebar-width-icon] group-data-[side=left]:border-r group-data-[side=right]:border-l",
             className
           )}
+          onClick={() => state === "collapsed" && toggleSidebar()}
           {...props}
         >
           <div
@@ -252,6 +253,15 @@ const Sidebar = React.forwardRef<
           >
             {children}
           </div>
+          
+          {/* Add a visual indicator when sidebar is collapsed */}
+          {state === "collapsed" && (
+            <div 
+              className="absolute top-1/2 -right-2 transform -translate-y-1/2 w-1 h-16 bg-sidebar-border rounded-r-md cursor-pointer hover:bg-sidebar-accent transition-colors" 
+              onClick={toggleSidebar}
+              title="Expand sidebar"
+            />
+          )}
         </div>
       </div>
     )
@@ -263,7 +273,7 @@ const SidebarTrigger = React.forwardRef<
   React.ElementRef<typeof Button>,
   React.ComponentProps<typeof Button>
 >(({ className, onClick, ...props }, ref) => {
-  const { toggleSidebar } = useSidebar()
+  const { toggleSidebar, state } = useSidebar()
 
   return (
     <Button
@@ -278,7 +288,10 @@ const SidebarTrigger = React.forwardRef<
       }}
       {...props}
     >
-      <PanelLeft />
+      <PanelLeft className={cn(
+        "transition-transform duration-200",
+        state === "collapsed" ? "rotate-180" : ""
+      )} />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   )

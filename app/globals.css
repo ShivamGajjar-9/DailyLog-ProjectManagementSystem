@@ -87,13 +87,17 @@ body {
   }
 }
 
+/* Fix for dark mode button overflow */
+.dark .sidebar-menu-button {
+  @apply text-sidebar-foreground;
+}
 
+.dark .sidebar-menu-button:hover {
+  @apply bg-sidebar-accent text-sidebar-accent-foreground;
+}
 
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+/* Fix for sidebar overflow */
+.sidebar-content {
+  @apply overflow-y-auto;
+  max-height: calc(100vh - 200px);
 }

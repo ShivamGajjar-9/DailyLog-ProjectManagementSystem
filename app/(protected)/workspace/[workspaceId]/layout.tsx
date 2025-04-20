@@ -1,7 +1,7 @@
 import { getUserWorkspaces } from "@/app/data/workspace/get-user-workspaces";
 import { Navbar } from "@/components/navbar";
 import { AppSidebarContainer } from "@/components/sidebar/app-sidebar-container";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { redirect } from "next/navigation";
 import React from "react";
 
@@ -25,18 +25,14 @@ const WorkspaceIdLayout = async ({ children, params }: Props) => {
         <AppSidebarContainer data={data as any} workspaceId={workspaceId} />
 
         <main className="w-full overflow-y-auto min-h-screen">
-          <div className="flex items-start">
-            <SidebarTrigger className="pt-3" />
+          <Navbar
+            id={data?.id}
+            name={data?.name as string}
+            email={data?.email as string}
+            image={data?.image as string}
+          />
 
-            <Navbar
-              id={data?.id}
-              name={data?.name as string}
-              email={data?.email as string}
-              image={data?.image as string}
-            />
-          </div>
-
-          <div className="p-0 md:p-4 pt-2">{children}</div>
+          <div className="p-4">{children}</div>
         </main>
       </div>
     </SidebarProvider>

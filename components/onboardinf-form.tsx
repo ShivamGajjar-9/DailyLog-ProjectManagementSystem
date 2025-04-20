@@ -73,10 +73,8 @@ export const OnboardingForm = ({ name, email, image }: Props) => {
     <div className="min-h-screen flex items-center justify-center bg-background">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Welcome to DailyTM</CardTitle>
-          <CardDescription>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-          </CardDescription>
+          <CardTitle>Welcome to DailyLog</CardTitle>
+          <CardDescription>Create your first workspace to get started</CardDescription>
         </CardHeader>
 
         <CardContent>

@@ -30,23 +30,28 @@ export const AppSidebar = ({
     <>
       <Sidebar collapsible="icon">
         <SidebarHeader className="bg-background">
-          <div className="flex items-center">
+          <div className="flex items-center gap-2">
             <Avatar>
               <AvatarImage src={"/wrench.svg"} />
             </Avatar>
             <SidebarGroupLabel>
-              <span className="text-xl font-bold">DailyTM</span>
+              <span className="text-xl font-bold">DailyLog</span>
             </SidebarGroupLabel>
           </div>
 
-          <div className="flex justify-between mb-0">
+          <div className="flex justify-between mb-0 items-center">
             <SidebarGroupLabel className="mb-2 text-sm font-semibold text-muted-foreground uppercase">
               Workspace
             </SidebarGroupLabel>
 
-            <Button asChild size={"icon"} className="size-5">
+            <Button
+              asChild
+              size={"icon"}
+              className="size-5 group-data-[collapsible=icon]:hidden"
+              variant="ghost"
+            >
               <Link href="/create-workspace">
-                <Plus />
+                <Plus className="h-4 w-4" />
               </Link>
             </Button>
           </div>
@@ -54,7 +59,7 @@ export const AppSidebar = ({
           <WorkspaceSelector workspaces={data.workspaces} />
         </SidebarHeader>
 
-        <SidebarContent>
+        <SidebarContent className="sidebar-content">
           <NavMain />
           <NavProjects
             projects={projects}

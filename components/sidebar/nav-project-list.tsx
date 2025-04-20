@@ -38,14 +38,14 @@ export const NavProjects = ({
             const href = `/workspace/${proj.workspaceId}/projects/${proj.id}`;
             return (
               <SidebarMenuItem key={proj?.id}>
-                <SidebarMenuButton>
+                <SidebarMenuButton className="sidebar-menu-button">
                   <a
                     href={href}
-                    className={
+                    className={`truncate block ${
                       pathname === href
                         ? "text-blue-500 font-semibold"
                         : "text-muted-foreground"
-                    }
+                    }`}
                   >
                     {proj?.name}
                   </a>

@@ -24,7 +24,7 @@ export const ProjectCard = ({ ref, provided, task }: DataProps) => {
       {...provided.dragHandleProps}
       className="mb-2 p-3 bg-white dark:bg-gray-900 shadow-sm"
     >
-      <Link href={`/workspace/${workspaceId}/projects/${projectId}/${task.id}`}>
+      <Link href={`/workspace/${workspaceId}/projects/${projectId}/tasks/${task.id}`}>
         <h3 className="font-medium">{task.title}</h3>
       </Link>
       {task.description && (

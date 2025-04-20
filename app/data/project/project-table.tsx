@@ -11,9 +11,21 @@ export interface TaskProps extends Task {
 }
 
 export const ProjectTable = ({ tasks }: { tasks: TaskProps[] }) => {
-  return <DataTable columns={columns} data={tasks as any} />;
+  return (
+    <DataTable
+      columns={columns}
+      data={tasks as any}
+      filterColumn="title"
+      filterPlaceholder="Filter by title..."
+    />
+  );
 };
 
 export const MyTasksTable = ({ tasks }: { tasks: TaskProps[] }) => (
-  <DataTable columns={myTaskColumns} data={tasks as any} />
+  <DataTable
+    columns={myTaskColumns}
+    data={tasks as any}
+    filterColumn="title"
+    filterPlaceholder="Filter by title..."
+  />
 );
